@@ -4,12 +4,12 @@ Boolean Retrieval Model
 
 from collections import defaultdict
 
-from preprocessing import preprocess
+from src.preprocessing import preprocess
 
 
-def build_inverted_index(documents: list[str]) -> dict:
+def build_inverted_index(documents: list[str]) -> dict[str, set[int]]:
     """
-    Build an inverted index from the document collection.
+    Build an inverted index from a collection of documents.
     """
 
     index = defaultdict(set)
@@ -23,17 +23,23 @@ def build_inverted_index(documents: list[str]) -> dict:
     return index
 
 
-def get_postings(term: str, index: dict) -> set:
+def get_postings(term: str, index: dict[str, set[int]]) -> set[int]:
     """
     Return the posting list for a given term.
     """
 
     return index.get(term.lower(), set())
-    def boolean_search(query: str, index: dict, total_docs: int) -> set:
-    """
-    Execute a simple Boolean query.
 
-    Supported queries:
+
+def boolean_search(
+    query: str,
+    index: dict[str, set[int]],
+    total_docs: int,
+) -> set[int]:
+    """
+    Execute a Boolean query.
+
+    Supported formats:
         term
         term1 AND term2
         term1 OR term2
@@ -68,5 +74,6 @@ def get_postings(term: str, index: dict) -> set:
         return left | right
 
     raise ValueError(
-        "Supported queries: term, term1 AND term2, term1 OR term2, NOT term"
+        "Supported queries: "
+        "'term', 'term1 AND term2', 'term1 OR term2', or 'NOT term'."
     )
