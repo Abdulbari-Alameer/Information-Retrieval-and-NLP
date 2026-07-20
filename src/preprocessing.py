@@ -7,29 +7,30 @@ across all Information Retrieval models.
 
 import string
 
-# A small set of stopwords for this toy project
+# Small stopword list for this educational project
 STOPWORDS = {
-    "is",
-    "in",
-    "the",
-    "and",
-    "to",
-    "for",
-    "of",
     "a",
-    "an"
+    "an",
+    "and",
+    "for",
+    "in",
+    "is",
+    "of",
+    "the",
+    "to",
 }
 
 
 def preprocess(text: str) -> list[str]:
     """
-    Convert text into cleaned tokens.
+    Preprocess a single text document.
 
-    Steps:
-    1. Lowercase
-    2. Remove punctuation
-    3. Tokenize
-    4. Remove stopwords
+    Steps
+    -----
+    1. Convert text to lowercase.
+    2. Remove punctuation.
+    3. Tokenize using whitespace.
+    4. Remove stopwords.
 
     Parameters
     ----------
@@ -50,14 +51,53 @@ def preprocess(text: str) -> list[str]:
         str.maketrans("", "", string.punctuation)
     )
 
-    # Split into words
+    # Tokenize
     tokens = text.split()
 
     # Remove stopwords
-    tokens = [
+    return [
         token
         for token in tokens
         if token not in STOPWORDS
     ]
 
-    return tokens
+
+def preprocess_corpus(documents: list[str]) -> list[list[str]]:
+    """
+    Apply preprocessing to an entire document collection.
+
+    Parameters
+    ----------
+    documents : list[str]
+        Collection of text documents.
+
+    Returns
+    -------
+    list[list[str]]
+        Tokenized and cleaned documents.
+    """
+
+    return [
+        preprocess(document)
+        for document in documents
+    ]
+
+
+if __name__ == "__main__":
+
+    sample_documents = [
+        "Machine Learning is used in Artificial Intelligence.",
+        "Natural Language Processing enables information retrieval.",
+    ]
+
+    print("Original Documents:\n")
+
+    for document in sample_documents:
+        print(document)
+
+    print("\nProcessed Documents:\n")
+
+    processed = preprocess_corpus(sample_documents)
+
+    for tokens in processed:
+        print(tokens)
