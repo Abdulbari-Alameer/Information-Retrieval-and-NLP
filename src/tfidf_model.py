@@ -5,7 +5,6 @@ TF-IDF Vector Space Model
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-
 def tfidf_search(
     documents: list[str],
     query: str
