@@ -1,0 +1,6 @@
+Machine learning is used in artificial intelligence.
+Deep learning uses neural networks.
+Natural language processing enables computers to understand text.
+Search engines use information retrieval techniques.
+Python is widely used in data science.
+Transformers improved natural language processing tasks.
