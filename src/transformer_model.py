@@ -1,5 +1,5 @@
 """
-Transformer Embeddings using Hugging Face Transformers
+Transformer Embedding Model using Hugging Face
 """
 
 import numpy as np
@@ -18,23 +18,37 @@ MODEL_NAME = "distilbert-base-uncased"
 
 
 def mean_pooling(model_output, attention_mask):
-    """Compute sentence embedding using mean pooling."""
+    """
+    Compute sentence embeddings using mean pooling.
+    """
 
     token_embeddings = model_output.last_hidden_state
 
-    mask = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
+    input_mask_expanded = (
+        attention_mask
+        .unsqueeze(-1)
+        .expand(token_embeddings.size())
+        .float()
+    )
 
-    return (token_embeddings * mask).sum(1) / mask.sum(1)
+    return (
+        (token_embeddings * input_mask_expanded).sum(1)
+        / input_mask_expanded.sum(1)
+    )
 
 
-def transformer_search(documents, query):
+def transformer_search(
+    documents: list[str],
+    query: str
+) -> list[tuple[int, float]]:
     """
     Rank documents using DistilBERT embeddings.
     """
 
     if not TRANSFORMER_AVAILABLE:
-        print("transformers is not installed.")
-        return []
+        raise ImportError(
+            "transformers is not installed."
+        )
 
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     model = AutoModel.from_pretrained(MODEL_NAME)
@@ -49,9 +63,12 @@ def transformer_search(documents, query):
     )
 
     with torch.no_grad():
-        output = model(**encoded)
+        outputs = model(**encoded)
 
-    embeddings = mean_pooling(output, encoded["attention_mask"])
+    embeddings = mean_pooling(
+        outputs,
+        encoded["attention_mask"]
+    )
 
     embeddings = embeddings.cpu().numpy()
 
@@ -63,27 +80,27 @@ def transformer_search(documents, query):
         document_embeddings
     )[0]
 
-    ranked = sorted(
+    ranked_results = sorted(
         enumerate(scores),
-        key=lambda x: x[1],
+        key=lambda item: item[1],
         reverse=True
     )
 
-    return ranked
+    return ranked_results
 
 
-def print_transformer_results(documents, query):
+def print_transformer_results(
+    documents: list[str],
+    query: str
+) -> None:
     """
-    Print ranked Transformer results.
+    Print ranked Transformer search results.
     """
-
-    results = transformer_search(documents, query)
-
-    if not results:
-        return
 
     print("\n===== TRANSFORMER RESULTS =====")
     print(f"Query: {query}\n")
+
+    results = transformer_search(documents, query)
 
     for doc_id, score in results:
         print(f"D{doc_id} | Score = {score:.4f}")
