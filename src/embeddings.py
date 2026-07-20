@@ -1,9 +1,10 @@
 """
-Embedding models:
-- CBOW
-- Skip-gram
-- GloVe
-- FastText
+Embedding Models
+----------------
+CBOW
+Skip-gram
+FastText
+GloVe
 """
 
 try:
@@ -13,10 +14,15 @@ try:
     GENSIM_AVAILABLE = True
 except ImportError:
     GENSIM_AVAILABLE = False
-  def train_word2vec(tokenized_corpus):
+
+
+def train_word2vec(tokenized_corpus: list[list[str]]):
     """
-    Train both CBOW and Skip-gram models.
+    Train CBOW and Skip-gram models.
     """
+
+    if not GENSIM_AVAILABLE:
+        raise ImportError("gensim is not installed.")
 
     cbow_model = Word2Vec(
         sentences=tokenized_corpus,
@@ -24,7 +30,9 @@ except ImportError:
         window=3,
         min_count=1,
         sg=0,
-        epochs=100
+        epochs=100,
+        workers=1,
+        seed=42,
     )
 
     skipgram_model = Word2Vec(
@@ -33,60 +41,82 @@ except ImportError:
         window=3,
         min_count=1,
         sg=1,
-        epochs=100
+        epochs=100,
+        workers=1,
+        seed=42,
     )
 
     return cbow_model, skipgram_model
-    def print_word2vec_results(model, word):
-    """
-    Print nearest neighbors.
-    """
 
-    print(f"\nNearest words for '{word}':")
 
-    try:
-        for w, score in model.wv.most_similar(word, topn=5):
-            print(f"{w:<20} {score:.4f}")
-
-    except KeyError:
-        print("Word not found.")
-      def train_fasttext(tokenized_corpus):
+def train_fasttext(tokenized_corpus: list[list[str]]):
     """
     Train a FastText model.
     """
+
+    if not GENSIM_AVAILABLE:
+        raise ImportError("gensim is not installed.")
 
     model = FastText(
         sentences=tokenized_corpus,
         vector_size=50,
         window=3,
         min_count=1,
-        epochs=100
+        epochs=100,
+        workers=1,
+        seed=42,
     )
 
     return model
+
+
 def load_glove():
     """
-    Load pretrained GloVe model.
+    Load pretrained GloVe embeddings.
     """
 
-    try:
-        glove = api.load("glove-wiki-gigaword-50")
-        return glove
+    if not GENSIM_AVAILABLE:
+        return None
 
+    try:
+        return api.load("glove-wiki-gigaword-50")
     except Exception:
         return None
-      def print_glove_results(glove, word):
+
+
+def print_word_neighbors(model, word: str, topn: int = 5):
     """
-    Print nearest neighbors using GloVe.
+    Print nearest words.
     """
 
-    if glove is None:
-        print("GloVe model could not be loaded.")
-        return
+    print(f"\nNearest neighbors for '{word}':")
 
     try:
-        for w, score in glove.most_similar(word, topn=5):
-            print(f"{w:<20} {score:.4f}")
+        neighbors = model.wv.most_similar(word, topn=topn)
+
+        for neighbor, score in neighbors:
+            print(f"{neighbor:<20} {score:.4f}")
 
     except KeyError:
-        print("Word not found.")
+        print("Word not found in vocabulary.")
+
+
+def print_glove_neighbors(glove_model, word: str, topn: int = 5):
+    """
+    Print nearest words using GloVe.
+    """
+
+    if glove_model is None:
+        print("GloVe model is unavailable.")
+        return
+
+    print(f"\nNearest neighbors for '{word}':")
+
+    try:
+        neighbors = glove_model.most_similar(word, topn=topn)
+
+        for neighbor, score in neighbors:
+            print(f"{neighbor:<20} {score:.4f}")
+
+    except KeyError:
+        print("Word not found in GloVe vocabulary.")
