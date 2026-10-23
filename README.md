@@ -26,7 +26,7 @@ Information-Retrieval-and-NLP/
 ├── data/
 │   └── corpus.txt
 ├── notebooks/
-│   └── IR_methods_comparison.ipynb
+│   └── 01_methods_walkthrough.ipynb
 ├── src/
 │   ├── __init__.py
 │   ├── config.py
@@ -70,7 +70,7 @@ There are two ways to run the project.
 
 **1. Notebook: all seven methods side by side** (recommended)
 
-Open [`notebooks/IR_methods_comparison.ipynb`](notebooks/IR_methods_comparison.ipynb) in Jupyter or Google Colab and run all cells. It ranks one corpus of 8 documents against the query *"neural networks for language understanding"* with Boolean retrieval, TF-IDF, Word2Vec (CBOW and Skip-gram), GloVe, FastText, Sentence-BERT and DistilBERT, and compares the results. The saved outputs can be read on GitHub without running anything.
+Open [`notebooks/01_methods_walkthrough.ipynb`](notebooks/01_methods_walkthrough.ipynb) in Jupyter or Google Colab and run all cells. It ranks one corpus of 8 documents against the query *"neural networks for language understanding"* with Boolean retrieval, TF-IDF, Word2Vec (CBOW and Skip-gram), GloVe, FastText, Sentence-BERT and DistilBERT, and compares the results. The saved outputs can be read on GitHub without running anything.
 
 **2. Command line: interactive search**
 
