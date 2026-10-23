@@ -23,16 +23,11 @@ This project was developed for the **Information Retrieval** course and provides
 
 ```
 Information-Retrieval-and-NLP/
-│
 ├── data/
 │   └── corpus.txt
-│
-├── output/
-│
-├── notebooks/
-│
 ├── src/
 │   ├── __init__.py
+│   ├── config.py
 │   ├── preprocessing.py
 │   ├── utils.py
 │   ├── boolean_retrieval.py
@@ -40,14 +35,11 @@ Information-Retrieval-and-NLP/
 │   ├── embeddings.py
 │   ├── bert_model.py
 │   └── transformer_model.py
-│
-├── tests/
-│
 ├── main.py
-├── README.md
 ├── requirements.txt
 ├── LICENSE
-└── .gitignore
+├── .gitignore
+└── README.md
 ```
 
 ---
@@ -57,7 +49,7 @@ Information-Retrieval-and-NLP/
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Information-Retrieval-and-NLP.git
+git clone https://github.com/Abdulbari-Alameer/Information-Retrieval-and-NLP.git
 
 cd Information-Retrieval-and-NLP
 ```
@@ -192,4 +184,4 @@ This project is released under the MIT License.
 
 ## Author
 
-Developed as an educational project for the Information Retrieval course.
+**Abdulbari Al-Ameer**, Master's in Computer Science & Engineering, Tezpur University. Developed as an educational project for the Information Retrieval course.
